@@ -4,7 +4,7 @@ import nodemailer from 'nodemailer'
 import type _mg from 'nodemailer-mailgun-transport'
 import Handlebars from 'handlebars'
 import { inline } from '@css-inline/css-inline'
-import { logger, omit, builder } from '../../utils'
+import { logger, omit, builder } from '~/src/utils'
 import { useRuntimeConfig, useStorage } from '#imports'
 import type { EmailOptions, MailgunOptions, ModuleOptions, SMTPOptions } from '~/src/types'
 
