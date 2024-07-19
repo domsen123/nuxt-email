@@ -30,7 +30,7 @@ const selfClosingElements: string[] = [
   'track',
   'wbr',
 ]
-const concat = (obj: object) => Object.entries(obj).map(([key, value]) => `${key}:"${value}"`).join(';')
+const concat = (obj: object) => Object.entries(obj).map(([key, value]) => `${key}:${value}`).join(';')
 
 const stringify = (obj: Record<string, unknown>) => {
   return Object.entries(obj).map(([key, value]) => {
