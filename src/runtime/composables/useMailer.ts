@@ -1,5 +1,5 @@
 import type { EmailOptions } from '../../types'
-import { builder } from '../../utils'
+import { builder } from '../utils'
 
 export const useMailer = () => {
   const send = async (options: EmailOptions) => {

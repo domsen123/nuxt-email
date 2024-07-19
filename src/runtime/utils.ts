@@ -1,5 +1,5 @@
 import { consola } from 'consola'
-import type { AnyBuilderElement } from './types'
+import type { AnyBuilderElement } from '../types'
 
 export const logger = consola.withTag('nuxt-mailer')
 
