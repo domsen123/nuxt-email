@@ -1,7 +1,7 @@
 export default defineEventHandler(async () => {
   const mailer = new MailService()
   await mailer.send({
-    to: 'dominic.marx@vinci-energies.com',
+    to: 'someone@example.com',
     subject: 'Welcome to Nuxt Mailer',
     template: {
       data: {
