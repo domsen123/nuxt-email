@@ -4,7 +4,7 @@ import nodemailer from 'nodemailer'
 import type _mg from 'nodemailer-mailgun-transport'
 import Handlebars from 'handlebars'
 import { inline } from '@css-inline/css-inline'
-import { logger, omit } from '../../utils'
+import { logger, omit, builder } from '../../utils'
 import { useRuntimeConfig, useStorage } from '#imports'
 import type { EmailOptions, MailgunOptions, ModuleOptions, SMTPOptions } from '~/src/types'
 
@@ -46,14 +46,16 @@ const getMailer = (): Transporter => {
   return transporter
 }
 
-export default class MailService {
-  mailer: Transporter
-  env: ModuleOptions
+export class MailService {
+  private mailer: Transporter
+  private env: ModuleOptions
 
   constructor() {
     this.mailer = getMailer()
     this.env = useRuntimeConfig().mailer as ModuleOptions
   }
+
+  static builder = builder
 
   async send<T>(options: EmailOptions): Promise<T | null> {
     const { template, ...emailOptions } = options
@@ -112,3 +114,5 @@ export default class MailService {
     return html
   }
 }
+
+export default MailService

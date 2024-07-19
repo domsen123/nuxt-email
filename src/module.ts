@@ -1,6 +1,6 @@
 import defu from 'defu'
 import { get } from 'lodash-es'
-import { defineNuxtModule, createResolver, addServerHandler, addImports } from '@nuxt/kit'
+import { defineNuxtModule, createResolver, addServerHandler, addImports, addServerImports } from '@nuxt/kit'
 import type { ModuleOptions } from './types'
 
 export default defineNuxtModule<ModuleOptions>({
@@ -46,6 +46,13 @@ export default defineNuxtModule<ModuleOptions>({
       handler: resolve('runtime/server/api/mailer.post'),
       method: 'post',
     })
+
+    addServerImports([
+      {
+        name: 'MailService',
+        from: resolve('runtime/server/mailer'),
+      },
+    ])
 
     addImports({
       name: 'useMailer',

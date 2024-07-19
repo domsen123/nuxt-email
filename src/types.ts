@@ -2,6 +2,8 @@ import type { Options as _SMTPOptions } from 'nodemailer/lib/smtp-transport'
 import type { Options as _MailgunOptions } from 'nodemailer-mailgun-transport'
 import type { SendMailOptions } from 'nodemailer'
 
+export type { MailService } from './runtime/server/mailer'
+
 type AnyItem = Record<string, unknown>
 
 export type TransportTypes = 'smtp' | 'mailgun'

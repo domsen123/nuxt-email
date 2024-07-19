@@ -4,6 +4,7 @@ const { send, builder } = useMailer()
 const sendMail = async () => {
   await send({
     to: 'someone@example.com',
+    subject: 'Welcome to Nuxt Mailer',
     template: {
       data: {
         content: builder({
