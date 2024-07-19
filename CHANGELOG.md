@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.2.0
+
+[compare changes](https://github.com/domsen123/nuxt-email/compare/v1.1.0...v1.2.0)
+
+### 🩹 Fixes
+
+- Concat ([00875d4](https://github.com/domsen123/nuxt-email/commit/00875d4))
+
+### ❤️ Contributors
+
+- Dominic <dmarx@marxulm.de>
+
 ## v1.1.0
 
 [compare changes](https://github.com/domsen123/nuxt-email/compare/v1.0.3...v1.1.0)
