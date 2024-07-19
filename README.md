@@ -1,14 +1,14 @@
 
-# Nuxt Mailer Module
+# Nuxt Email Module
 
-Nuxt Mailer is a Nuxt module that allows sending emails directly from a Nuxt.js application. This module supports creating and using Handlebar email templates for dynamic and customizable email content.
+Nuxt Email is a Nuxt module that allows sending emails directly from a Nuxt.js application. This module supports creating and using Handlebar email templates for dynamic and customizable email content.
 
 ## Installation
 
-Install the Nuxt Mailer module via npm or yarn:
+Install the Nuxt Email module via npm or yarn:
 
 ```bash
-pnpm add nuxt-mailer
+pnpm add nuxt-email
 ```
 
 ## Configuration
@@ -18,7 +18,7 @@ Add the module to your `nuxt.config.js` and configure the necessary settings:
 ```ts
 export default defineNuxtConfig({
   modules: [
-    'nuxt-mailer',
+    'nuxt-email',
   ],
   mailer: {
     from: 'someone@example.com'

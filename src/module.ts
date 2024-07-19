@@ -5,7 +5,7 @@ import type { ModuleOptions } from './types'
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
-    name: 'nuxt-mailer',
+    name: 'nuxt-email',
     configKey: 'mailer',
   },
   defaults: {
