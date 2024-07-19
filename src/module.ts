@@ -1,5 +1,5 @@
 import defu from 'defu'
-import get from 'lodash-es/get'
+import { get } from 'lodash-es'
 import { defineNuxtModule, createResolver, addServerHandler, addImports } from '@nuxt/kit'
 import type { ModuleOptions } from './types'
 
