@@ -3,7 +3,6 @@ import type { Transporter } from 'nodemailer'
 import nodemailer from 'nodemailer'
 import type _mg from 'nodemailer-mailgun-transport'
 import Handlebars from 'handlebars'
-import { inline } from '@css-inline/css-inline'
 import { logger, omit, builder } from '../utils'
 import { useRuntimeConfig, useStorage } from '#imports'
 import type { EmailOptions, MailgunOptions, ModuleOptions, SMTPOptions } from '~/src/types'
@@ -109,7 +108,7 @@ export class MailService {
     if (!templateString) {
       throw new Error(`Template "${template}" doesn't exist`)
     }
-    const html = inline(Handlebars.compile(templateString)(variables))
+    const html = Handlebars.compile(templateString)(variables)
 
     return html
   }
