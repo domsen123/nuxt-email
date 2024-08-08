@@ -1,6 +1,20 @@
 # Changelog
 
 
+## v1.2.2
+
+[compare changes](https://github.com/domsen123/nuxt-email/compare/v1.2.1...v1.2.2)
+
+### 🩹 Fixes
+
+- Types ([9e870e0](https://github.com/domsen123/nuxt-email/commit/9e870e0))
+- Types ([156156b](https://github.com/domsen123/nuxt-email/commit/156156b))
+
+### ❤️ Contributors
+
+- Dominic <dmarx@marxulm.de>
+- Dominic Marx <dmarx@marxulm.de>
+
 ## v1.2.1
 
 [compare changes](https://github.com/domsen123/nuxt-email/compare/v1.2.0...v1.2.1)
