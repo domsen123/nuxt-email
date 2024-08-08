@@ -5,17 +5,17 @@ import type _mg from 'nodemailer-mailgun-transport'
 import Handlebars from 'handlebars'
 import { logger, omit, builder } from '../utils'
 import { useRuntimeConfig, useStorage } from '#imports'
-import type { EmailOptions, MailgunOptions, ModuleOptions, SMTPOptions } from '~/src/types'
+import type { BaseOptions, EmailOptions, MailgunOptions, ModuleOptions, SMTPOptions } from '~/src/types'
 
 const require = createRequire(import.meta.url)
 
 let transporter: Transporter
 
-const isMailgun = (options: ModuleOptions): options is MailgunOptions => {
+const isMailgun = (options: ModuleOptions): options is BaseOptions & MailgunOptions => {
   return options.transport === 'mailgun'
 }
 
-const isSmtp = (options: ModuleOptions): options is SMTPOptions => {
+const isSmtp = (options: ModuleOptions): options is BaseOptions & SMTPOptions => {
   return options.transport === 'smtp'
 }
 
@@ -93,8 +93,8 @@ export class MailService {
 
     for (let i = 0; i < keys.length; i++) {
       const storage = i === 0 ? 'custom-mail-templates' : 'mail-templates'
-      for (const key of keys[i].filter(k => k.endsWith('.partial.hbs'))) {
-        const partial = key.replace('.partial.hbs', '')
+      for (const key of keys[i].filter(k => k.endsWith('.layout.hbs'))) {
+        const partial = key.replace('.layout.hbs', '')
         const content = await useStorage<string>(`assets:${storage}`).getItem(key)
         if (content) Handlebars.registerPartial(partial, content)
       }

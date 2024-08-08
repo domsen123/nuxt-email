@@ -37,7 +37,7 @@ export default defineNuxtModule<ModuleOptions>({
       }
     },
   },
-  setup(_options, _nuxt) {
+  async setup(_options, _nuxt) {
     const { resolve } = createResolver(import.meta.url)
 
     _nuxt.options.runtimeConfig.mailer = defu(_nuxt.options.runtimeConfig.mailer || {}, _options)
