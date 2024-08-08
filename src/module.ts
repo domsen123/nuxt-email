@@ -12,6 +12,7 @@ export default defineNuxtModule<ModuleOptions>({
     from: 'no-reply@example.com',
     transport: 'smtp',
     templatePath: 'mail-templates',
+    allowedDomains: [],
   },
   hooks: {
     'nitro:config': async (config) => {

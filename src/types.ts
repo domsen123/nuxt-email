@@ -1,4 +1,4 @@
-import type { Options as _SMTPOptions } from 'nodemailer/lib/smtp-transport'
+import type { Options as _SMTPOptions } from 'nodemailer/lib/smtp-connection'
 import type { Options as _MailgunOptions } from 'nodemailer-mailgun-transport'
 import type { SendMailOptions } from 'nodemailer'
 
@@ -11,19 +11,19 @@ export type TransportTypes = 'smtp' | 'mailgun'
 export interface BaseOptions {
   templatePath: string
   transport: TransportTypes
+  from: string
+  allowedDomains?: string[]
 }
 
-export interface SMTPOptions extends BaseOptions, _SMTPOptions {
+export type SMTPOptions = {
   transport: 'smtp'
-  from: string
-}
+} & _SMTPOptions
 
-export interface MailgunOptions extends BaseOptions, _MailgunOptions {
+export type MailgunOptions = {
   transport: 'mailgun'
-  from: string
-}
+} & _MailgunOptions
 
-export type ModuleOptions = SMTPOptions | MailgunOptions
+export type ModuleOptions = (BaseOptions & SMTPOptions) | (BaseOptions & MailgunOptions)
 
 export type EmailOptions = SendMailOptions & {
   template?: {
