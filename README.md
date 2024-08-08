@@ -1,7 +1,7 @@
 
 # Nuxt Email Module
 
-Nuxt Email is a Nuxt module that allows sending emails directly from a Nuxt.js application. This module supports creating and using Handlebar email templates for dynamic and customizable email content.
+Nuxt Email is a powerful Nuxt.js module that facilitates sending emails directly from your application. With support for Handlebars templates, it allows for dynamic and customizable email content.
 
 ## Installation
 
@@ -21,18 +21,18 @@ export default defineNuxtConfig({
     'nuxt-email',
   ],
   mailer: {
-    from: 'someone@example.com'
+    from: 'someone@example.com',
     transport: 'smtp',
     templatePath: 'mail-templates',
-    // only allow emails to example.com - if undefined or empty -> all domains are allowed!
-    allowedDomains: ['example.com']
+    allowedDomains: ['example.com'],
     ...options
   }
 })
 ```
-Add default template to your project:
 
-``/[your template path || mail-templates]/default.hbs`` 
+Create a default template in your project:
+
+**`/[your template path || mail-templates]/default.hbs`**
 
 ```handlebars
 {{#block "header"}}
@@ -52,10 +52,9 @@ Add default template to your project:
 {{> default-layout }}
 ```
 
+## Options
 
-### Options
-
-#### SMTP Options
+### SMTP Options
 
 - `transport`: smtp
 - `host`: The SMTP server you want to use.
@@ -68,7 +67,7 @@ Add default template to your project:
 
 For more options checkout: [https://nodemailer.com/smtp/](https://nodemailer.com/smtp/)
 
-#### Mailgun Options
+### Mailgun Options
 
 - `transport`: mailgun
 - `auth`: Authentication details for the SMTP server.
@@ -81,7 +80,7 @@ For more options checkout: [https://github.com/orliesaurus/nodemailer-mailgun-tr
 
 ### Creating Email Templates
 
-Place your Handlebar email templates in the configured directory (`templatesDir`). Each template should be saved in a separate `.hbs` file. Example:
+Place your Handlebar email templates in the configured directory (`templatePath`). Each template should be saved in a separate `.hbs` file. Example:
 
 **mail-templates/welcome.hbs:**
 
@@ -92,7 +91,7 @@ Place your Handlebar email templates in the configured directory (`templatesDir`
 
 ### Creating Email Layouts
 
-Place your Handlebar email layouts in the configured directory (`templatesDir`). Each template should be saved in a separate `.layout.hbs` file. Example:
+Place your Handlebar email layouts in the configured directory (`templatePath`). Each layout should be saved in a separate `.layout.hbs` file. Example:
 
 **mail-templates/auth.layout.hbs:**
 
@@ -109,7 +108,7 @@ You can define as many "blocks" as you want. Just add a new `{{#contentFor "bloc
 
 You can use your new layout with:
 
-`/[your template path || mail-templates]/auth.hbs`
+**`/[your template path || mail-templates]/auth.hbs`**
 
 ```handlebars
 {{#block "content"}}
@@ -121,26 +120,6 @@ You can use your new layout with:
 {{> auth }}
 ```
 
-and use template with:
-
-```html
-<script setup>
-const { send } = useMailer()
-
-
-const name = 'John Doe';
-send({
-    to: 'john@example.com',
-    template: {
-      name: 'auth'
-      data: {
-        username: 'john doe'
-      },
-    },
-  })
-</script>
-```
-
 ### Sending an Email
 
 Import and use the module in your Nuxt application:
@@ -149,12 +128,11 @@ Import and use the module in your Nuxt application:
 <script setup>
 const { send } = useMailer()
 
-
 const name = 'John Doe';
 send({
     to: 'john@example.com',
     template: {
-      name: 'welcome'
+      name: 'welcome',
       data: {
         name
       },
