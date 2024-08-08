@@ -1,19 +1,13 @@
 <script setup lang="ts">
-const { send, builder } = useMailer()
+const { send } = useMailer()
 
 const sendMail = async () => {
   await send({
-    to: 'someone@example.com',
+    to: 'dmarx@marxulm.de',
     subject: 'Welcome to Nuxt Mailer',
     template: {
       data: {
-        content: builder({
-          tag: 'div',
-          content: builder({
-            tag: 'span',
-            content: 'Welcome to Nuxt Mailer',
-          }),
-        }),
+        username: 'John Doe',
       },
     },
   })

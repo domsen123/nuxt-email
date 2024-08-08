@@ -6,6 +6,10 @@ export type { MailService } from './runtime/server/mailer'
 
 type AnyItem = Record<string, unknown>
 
+export interface BlockContext {
+  _blocks?: { [key: string]: Handlebars.TemplateDelegate }
+}
+
 export type TransportTypes = 'smtp' | 'mailgun'
 
 export interface BaseOptions {

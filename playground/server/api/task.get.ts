@@ -4,14 +4,9 @@ export default defineEventHandler(async () => {
     to: 'someone@example.com',
     subject: 'Welcome to Nuxt Mailer',
     template: {
+      name: 'default',
       data: {
-        content: MailService.builder({
-          tag: 'div',
-          content: MailService.builder({
-            tag: 'span',
-            content: 'Welcome to Nuxt Mailer',
-          }),
-        }),
+        username: 'John Doe',
       },
     },
   })

@@ -37,7 +37,7 @@ export default defineNuxtModule<ModuleOptions>({
       }
     },
   },
-  async setup(_options, _nuxt) {
+  setup(_options, _nuxt) {
     const { resolve } = createResolver(import.meta.url)
 
     _nuxt.options.runtimeConfig.mailer = defu(_nuxt.options.runtimeConfig.mailer || {}, _options)
@@ -48,12 +48,10 @@ export default defineNuxtModule<ModuleOptions>({
       method: 'post',
     })
 
-    addServerImports([
-      {
-        name: 'MailService',
-        from: resolve('runtime/server/mailer'),
-      },
-    ])
+    addServerImports([{
+      name: 'MailService',
+      from: resolve('runtime/server/mailer'),
+    }])
 
     addImports({
       name: 'useMailer',

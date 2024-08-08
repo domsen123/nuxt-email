@@ -5,7 +5,7 @@ import type _mg from 'nodemailer-mailgun-transport'
 import Handlebars from 'handlebars'
 import { logger, omit, builder } from '../utils'
 import { useRuntimeConfig, useStorage } from '#imports'
-import type { BaseOptions, EmailOptions, MailgunOptions, ModuleOptions, SMTPOptions } from '~/src/types'
+import type { BaseOptions, BlockContext, EmailOptions, MailgunOptions, ModuleOptions, SMTPOptions } from '~/src/types'
 
 const require = createRequire(import.meta.url)
 
@@ -43,6 +43,25 @@ const getMailer = (): Transporter => {
   }
 
   return transporter
+}
+
+export const registerHandlebarLayouts = async () => {
+  const keys = await Promise.all([
+    useStorage<string>('assets:custom-mail-templates').getKeys(),
+    useStorage<string>('assets:mail-templates').getKeys(),
+  ])
+
+  for (let i = 0; i < keys.length; i++) {
+    const storage = i === 0 ? 'custom-mail-templates' : 'mail-templates'
+    for (const key of keys[i].filter(k => k.endsWith('.layout.hbs'))) {
+      const partial = key.replace('.layout.hbs', '')
+      const content = await useStorage<string>(`assets:${storage}`).getItem(key)
+      if (content) {
+        logger.info(`Registering partial ${partial} from storage ${storage}`)
+        Handlebars.registerPartial(partial, content)
+      }
+    }
+  }
 }
 
 export class MailService {
@@ -85,20 +104,26 @@ export class MailService {
     return await this.mailer.sendMail(_options)
   }
 
-  private async renderTemplate(template: string, variables: Record<string, unknown>): Promise<string> {
-    const keys = await Promise.all([
-      useStorage<string>('assets:custom-mail-templates').getKeys(),
-      useStorage<string>('assets:mail-templates').getKeys(),
-    ])
-
-    for (let i = 0; i < keys.length; i++) {
-      const storage = i === 0 ? 'custom-mail-templates' : 'mail-templates'
-      for (const key of keys[i].filter(k => k.endsWith('.layout.hbs'))) {
-        const partial = key.replace('.layout.hbs', '')
-        const content = await useStorage<string>(`assets:${storage}`).getItem(key)
-        if (content) Handlebars.registerPartial(partial, content)
-      }
+  private registerHelpers() {
+    if (!Handlebars.helpers.block) {
+      Handlebars.registerHelper('block', function (this: BlockContext, name: string, options: Handlebars.HelperOptions) {
+        if (!this._blocks) {
+          this._blocks = {}
+        }
+        this._blocks[name] = options.fn
+        return null
+      })
     }
+    if (!Handlebars.helpers.contentFor) {
+      Handlebars.registerHelper('contentFor', function (this: BlockContext, name: string, options: Handlebars.HelperOptions) {
+        return this._blocks && this._blocks[name] ? this._blocks[name](this) : options.fn(this)
+      })
+    }
+  }
+
+  private async renderTemplate(template: string, variables: Record<string, unknown>): Promise<string> {
+    this.registerHelpers()
+    await registerHandlebarLayouts()
 
     let templateString = await useStorage<string>('assets:custom-mail-templates').getItem(template + '.hbs')
     if (!templateString) {

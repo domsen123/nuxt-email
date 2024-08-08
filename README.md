@@ -24,10 +24,34 @@ export default defineNuxtConfig({
     from: 'someone@example.com'
     transport: 'smtp',
     templatePath: 'mail-templates',
+    // only allow emails to example.com - if undefined or empty -> all domains are allowed!
+    allowedDomains: ['example.com']
     ...options
   }
 })
 ```
+Add default template to your project:
+
+``/[your template path || mail-templates]/default.hbs`` 
+
+```handlebars
+{{#block "header"}}
+  <div>Add a nice header</div>
+{{/block}}
+
+{{#block "content"}}
+  <div>
+    Add your content and your {{vars}}
+  </div>
+{{/block}}
+
+{{#block "footer"}}
+  <div>Add a nice footer</div>
+{{/block}}
+
+{{> default-layout }}
+```
+
 
 ### Options
 
@@ -66,6 +90,57 @@ Place your Handlebar email templates in the configured directory (`templatesDir`
 <p>Thank you for registering.</p>
 ```
 
+### Creating Email Layouts
+
+Place your Handlebar email layouts in the configured directory (`templatesDir`). Each template should be saved in a separate `.layout.hbs` file. Example:
+
+**mail-templates/auth.layout.hbs:**
+
+```handlebars
+<div>
+  Authentication
+  {{#contentFor "content"}}
+                  
+  {{/contentFor}}
+</div>
+```
+
+You can define as many "blocks" as you want. Just add a new `{{#contentFor "block_name"}}`.
+
+You can use your new layout with:
+
+`/[your template path || mail-templates]/auth.hbs`
+
+```handlebars
+{{#block "content"}}
+  <div>
+    You signed in as: {{username}}
+  </div>
+{{/block}}
+
+{{> auth }}
+```
+
+and use template with:
+
+```html
+<script setup>
+const { send } = useMailer()
+
+
+const name = 'John Doe';
+send({
+    to: 'john@example.com',
+    template: {
+      name: 'auth'
+      data: {
+        username: 'john doe'
+      },
+    },
+  })
+</script>
+```
+
 ### Sending an Email
 
 Import and use the module in your Nuxt application:
@@ -88,42 +163,6 @@ send({
 </script>
 ```
 
-### Using Builder
-
-You can use integrated builder for creating quick html mails.
-
-```html
-<script setup>
-const { send, builder } = useMailer()
-
-
-const name = 'John Doe';
-send({
-    to: 'john@example.com',
-    template: {
-      name: 'default' // you can omit
-      data: {
-        content: builder([
-          { 
-            tag: 'h1', 
-            content: 'Welcome John' 
-          },
-          {
-            tag: 'div',
-            content: [
-              { 
-                tag: 'p',
-                content: 'Welcome to nuxt-mailer'
-              }
-            ]
-          }
-        ])
-      },
-    },
-  })
-</script>
-```
-
 ## Use it on Server Side
 
 ```ts
@@ -136,13 +175,7 @@ export default defineEventHandler(async () => {
     subject: 'Welcome to Nuxt Mailer',
     template: {
       data: {
-        content: MailService.builder({
-          tag: 'div',
-          content: MailService.builder({
-            tag: 'span',
-            content: 'Welcome to Nuxt Mailer',
-          }),
-        }),
+        username: 'John Doe'
       },
     },
   })
